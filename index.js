@@ -47,11 +47,10 @@ module.exports = function (config) {
       .parse(process.argv)
   }
 
-  if (config.verbose) {
-    logger.setLevel(2)
-  } else if (config.silent) {
-    logger.setLevel(0)
-  }
+  if (config.verbose)
+    logger.setLevel(2);
+  else if (config.silent)
+    logger.setLevel(0);
 
   // Start the Mailserver & Web GUI
   mailserver.create(config.smtp, config.ip, config.incomingUser, config.incomingPass, config.hideExtensions)
@@ -78,10 +77,10 @@ module.exports = function (config) {
   if (!config.disableWeb) {
     // Default to run on same IP as smtp
     const webIp = config.webIp ? config.webIp : config.ip
-    web.start(config.web, webIp, mailserver, config.webUser, config.webPass, config.basePathname)
+    web.start(mailserver, config);
 
     if (config.open) {
-      const open = require('open')
+      const open = require('opn');
       open('http://' + (config.ip === '0.0.0.0' ? 'localhost' : config.ip) + ':' + config.web)
     }
 
